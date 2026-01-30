@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>催化剂加 - 登录</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .login-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+    }
+    
+    .login-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    
+    .login-header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .login-header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .login-body {
+      padding: 30px;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .tab.active {
+      color: #667eea;
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #667eea;
+    }
+    
+    .tab:hover {
+      color: #667eea;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-group input::placeholder {
+      color: #999;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+    
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .alert {
+      padding: 12px 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .alert.show {
+      display: block;
+    }
+    
+    .alert-error {
+      background: #fee;
+      color: #c33;
+      border: 1px solid #fcc;
+    }
+    
+    .alert-success {
+      background: #efe;
+      color: #3c3;
+      border: 1px solid #cfc;
+    }
+    
+    .form-content {
+      display: none;
+    }
+    
+    .form-content.active {
+      display: block;
+    }
+    
+    .login-footer {
+      text-align: center;
+      padding: 20px;
+      background: #f9f9f9;
+      border-top: 1px solid #f0f0f0;
+    }
+    
+    .login-footer p {
+      color: #666;
+      font-size: 13px;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>催化剂加</h1>
+      <p>AI for Science, Science for Everyone!</p>
+    </div>
+    
+    <div class="login-body">
+      <div class="tabs">
+        <div class="tab active" data-tab="login">登录</div>
+        <div class="tab" data-tab="register">注册</div>
+      </div>
+      
+      <div id="alertBox" class="alert"></div>
+      
+      <div id="loginForm" class="form-content active">
+        <div class="form-group">
+          <label for="loginUsername">用户名</label>
+          <input type="text" id="loginUsername" placeholder="请输入用户名" value="admin">
+        </div>
+        
+        <div class="form-group">
+          <label for="loginPassword">密码</label>
+          <input type="password" id="loginPassword" placeholder="请输入密码" value="admin123">
+        </div>
+        
+        <button id="loginBtn" class="btn btn-primary">
+          <span>登录</span>
+        </button>
+      </div>
+      
+      <div id="registerForm" class="form-content">
+        <div class="form-group">
+          <label for="regUsername">用户名 *</label>
+          <input type="text" id="regUsername" placeholder="请输入用户名">
+        </div>
+        
+        <div class="form-group">
+          <label for="regPassword">密码 *</label>
+          <input type="password" id="regPassword" placeholder="请输入密码">
+        </div>
+        
+        <div class="form-group">
+          <label for="regConfirmPassword">确认密码 *</label>
+          <input type="password" id="regConfirmPassword" placeholder="请再次输入密码">
+        </div>
+        
+        <div class="form-group">
+          <label for="regNickname">昵称</label>
+          <input type="text" id="regNickname" placeholder="请输入昵称">
+        </div>
+        
+        <div class="form-group">
+          <label for="regEmail">邮箱</label>
+          <input type="email" id="regEmail" placeholder="请输入邮箱">
+        </div>
+        
+        <div class="form-group">
+          <label for="regPhone">手机号</label>
+          <input type="tel" id="regPhone" placeholder="请输入手机号">
+        </div>
+        
+        <button id="registerBtn" class="btn btn-primary">
+          <span>注册</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="login-footer">
+      <p>默认管理员账号：admin / admin123</p>
+    </div>
+  </div>
+  
+  <script src="login.js"></script>
+</body>
+</html>

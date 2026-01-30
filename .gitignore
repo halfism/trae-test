@@ -46,3 +46,9 @@ coverage/
 *.tmp
 *.temp
 .cache/
+
+# Database files
+data/
+*.db
+*.db-shm
+*.db-wal
