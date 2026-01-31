@@ -1,6 +1,7 @@
 // 主界面交互逻辑
 
 let currentUser = null;
+let currentSettings = {};
 
 // 初始化
 function init() {
@@ -9,6 +10,10 @@ function init() {
   setupSidebarToggle();
   setupLogout();
   setupMediaUpload();
+  setupSettingsTabs();
+  setupSettingsSave();
+  loadSettings();
+  updateSystemInfo();
   updateTime();
   setInterval(updateTime, 1000);
 }
@@ -170,6 +175,178 @@ function updateTime() {
     };
     currentTimeSpan.textContent = now.toLocaleString('zh-CN', options);
   }
+}
+
+// 设置选项卡切换
+function setupSettingsTabs() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.settings-tab-content');
+  
+  if (tabBtns.length > 0 && tabContents.length > 0) {
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabName = btn.dataset.tab;
+        
+        // 更新选项卡按钮状态
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // 更新内容显示
+        tabContents.forEach(content => content.classList.remove('active'));
+        const targetContent = document.getElementById(`tab-${tabName}`);
+        if (targetContent) {
+          targetContent.classList.add('active');
+        }
+      });
+    });
+  }
+}
+
+// 设置保存功能
+function setupSettingsSave() {
+  const saveBtn = document.getElementById('save-settings-btn');
+  
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      saveSettings();
+      alert('设置已保存！');
+    });
+  }
+}
+
+// 加载设置
+function loadSettings() {
+  const savedSettings = localStorage.getItem('appSettings');
+  if (savedSettings) {
+    currentSettings = JSON.parse(savedSettings);
+    applySettings();
+  } else {
+    // 设置默认值
+    currentSettings = {
+      theme: 'default',
+      language: 'zh-CN',
+      notification: true,
+      autoUpdate: true,
+      startup: false,
+      windowSize: { width: 1000, height: 800 },
+      multiInstance: true,
+      devTools: true,
+      dbPath: './data/database.sqlite',
+      dbBackup: true,
+      backupInterval: 7,
+      logLevel: 'info'
+    };
+    saveSettings();
+    applySettings();
+  }
+}
+
+// 保存设置
+function saveSettings() {
+  // 从表单中获取设置值
+  currentSettings = {
+    theme: document.getElementById('theme-select')?.value || 'default',
+    language: document.getElementById('language-select')?.value || 'zh-CN',
+    notification: document.getElementById('notification-toggle')?.checked || true,
+    autoUpdate: document.getElementById('auto-update-toggle')?.checked || true,
+    startup: document.getElementById('startup-toggle')?.checked || false,
+    windowSize: {
+      width: parseInt(document.getElementById('window-width')?.value || '1000'),
+      height: parseInt(document.getElementById('window-height')?.value || '800')
+    },
+    multiInstance: document.getElementById('multi-instance-toggle')?.checked || true,
+    devTools: document.getElementById('dev-tools-toggle')?.checked || true,
+    dbPath: document.getElementById('db-path')?.value || './data/database.sqlite',
+    dbBackup: document.getElementById('db-backup-toggle')?.checked || true,
+    backupInterval: parseInt(document.getElementById('backup-interval')?.value || '7'),
+    logLevel: document.getElementById('log-level')?.value || 'info'
+  };
+  
+  localStorage.setItem('appSettings', JSON.stringify(currentSettings));
+}
+
+// 应用设置
+function applySettings() {
+  // 应用主题设置
+  if (document.getElementById('theme-select')) {
+    document.getElementById('theme-select').value = currentSettings.theme;
+  }
+  
+  // 应用语言设置
+  if (document.getElementById('language-select')) {
+    document.getElementById('language-select').value = currentSettings.language;
+  }
+  
+  // 应用通知设置
+  if (document.getElementById('notification-toggle')) {
+    document.getElementById('notification-toggle').checked = currentSettings.notification;
+  }
+  
+  // 应用自动更新设置
+  if (document.getElementById('auto-update-toggle')) {
+    document.getElementById('auto-update-toggle').checked = currentSettings.autoUpdate;
+  }
+  
+  // 应用开机自启设置
+  if (document.getElementById('startup-toggle')) {
+    document.getElementById('startup-toggle').checked = currentSettings.startup;
+  }
+  
+  // 应用窗口大小设置
+  if (document.getElementById('window-width')) {
+    document.getElementById('window-width').value = currentSettings.windowSize.width;
+  }
+  if (document.getElementById('window-height')) {
+    document.getElementById('window-height').value = currentSettings.windowSize.height;
+  }
+  
+  // 应用多开设置
+  if (document.getElementById('multi-instance-toggle')) {
+    document.getElementById('multi-instance-toggle').checked = currentSettings.multiInstance;
+  }
+  
+  // 应用开发工具设置
+  if (document.getElementById('dev-tools-toggle')) {
+    document.getElementById('dev-tools-toggle').checked = currentSettings.devTools;
+  }
+  
+  // 应用数据库路径设置
+  if (document.getElementById('db-path')) {
+    document.getElementById('db-path').value = currentSettings.dbPath;
+  }
+  
+  // 应用数据库备份设置
+  if (document.getElementById('db-backup-toggle')) {
+    document.getElementById('db-backup-toggle').checked = currentSettings.dbBackup;
+  }
+  
+  // 应用备份间隔设置
+  if (document.getElementById('backup-interval')) {
+    document.getElementById('backup-interval').value = currentSettings.backupInterval;
+  }
+  
+  // 应用日志级别设置
+  if (document.getElementById('log-level')) {
+    document.getElementById('log-level').value = currentSettings.logLevel;
+  }
+}
+
+// 更新系统信息
+function updateSystemInfo() {
+  // 在实际应用中，这些信息可以通过 Electron 的 API 获取
+  // 这里我们使用模拟数据
+  document.getElementById('app-version')?.textContent = '1.0.0';
+  document.getElementById('electron-version')?.textContent = '28.0.0';
+  
+  // 获取操作系统信息
+  const osInfo = navigator.platform || 'Unknown';
+  document.getElementById('os-info')?.textContent = osInfo;
+  
+  // 模拟处理器信息
+  document.getElementById('cpu-info')?.textContent = 'Intel Core i7';
+  
+  // 模拟内存信息
+  document.getElementById('memory-info')?.textContent = '16GB';
 }
 
 // 页面加载时初始化

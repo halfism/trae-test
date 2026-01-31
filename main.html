@@ -404,6 +404,110 @@
       color: #f56c6c;
     }
     
+    /* 系统设置样式 */
+    .settings-tabs {
+      display: flex;
+      border-bottom: 1px solid #ebeef5;
+      margin: -18px -20px 20px -20px;
+      padding: 0 20px;
+    }
+    
+    .tab-btn {
+      padding: 12px 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: #606266;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .tab-btn:hover {
+      color: #409eff;
+    }
+    
+    .tab-btn.active {
+      color: #409eff;
+      border-bottom-color: #409eff;
+    }
+    
+    .settings-tab-content {
+      display: none;
+    }
+    
+    .settings-tab-content.active {
+      display: block;
+    }
+    
+    /* 开关样式 */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-switch label {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .toggle-switch label:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    .toggle-switch input:checked + label {
+      background-color: #409eff;
+    }
+    
+    .toggle-switch input:focus + label {
+      box-shadow: 0 0 1px #409eff;
+    }
+    
+    .toggle-switch input:checked + label:before {
+      transform: translateX(26px);
+    }
+    
+    /* 窗口大小输入样式 */
+    .window-size-inputs {
+      display: flex;
+      align-items: center;
+    }
+    
+    .window-size-inputs input {
+      flex: 1;
+      max-width: 150px;
+    }
+    
+    /* 系统信息框样式 */
+    .system-info-box {
+      background: #f5f7fa;
+      border-radius: 4px;
+      padding: 15px;
+    }
+    
     /* 响应式设计 */
     @media (max-width: 768px) {
       .sidebar {
@@ -433,6 +537,15 @@
       
       .logout-btn {
         display: none;
+      }
+      
+      .settings-tabs {
+        flex-wrap: wrap;
+      }
+      
+      .tab-btn {
+        padding: 8px 12px;
+        font-size: 12px;
       }
     }
   </style>
@@ -600,9 +713,153 @@
         <!-- 系统设置页面 -->
         <div id="page-settings" class="page">
           <div class="card">
-            <div class="card-header">系统设置</div>
+            <div class="card-header">
+              <div class="settings-tabs">
+                <button class="tab-btn active" data-tab="basic">基本设置</button>
+                <button class="tab-btn" data-tab="app">应用设置</button>
+                <button class="tab-btn" data-tab="database">数据库设置</button>
+                <button class="tab-btn" data-tab="system">系统设置</button>
+              </div>
+            </div>
             <div class="card-body">
-              <p>系统设置功能正在开发中...</p>
+              <!-- 基本设置 -->
+              <div class="settings-tab-content active" id="tab-basic">
+                <div class="form-group">
+                  <label for="theme-select">主题设置</label>
+                  <select class="form-control" id="theme-select">
+                    <option value="default">默认主题</option>
+                    <option value="dark">深色主题</option>
+                    <option value="light">浅色主题</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="language-select">语言设置</label>
+                  <select class="form-control" id="language-select">
+                    <option value="zh-CN">简体中文</option>
+                    <option value="en-US">English</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="notification-toggle">通知设置</label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="notification-toggle" checked>
+                    <label for="notification-toggle"></label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="auto-update-toggle">自动更新</label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="auto-update-toggle" checked>
+                    <label for="auto-update-toggle"></label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 应用设置 -->
+              <div class="settings-tab-content" id="tab-app">
+                <div class="form-group">
+                  <label for="startup-toggle">开机自启</label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="startup-toggle">
+                    <label for="startup-toggle"></label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="window-size">默认窗口大小</label>
+                  <div class="window-size-inputs">
+                    <input type="number" class="form-control" id="window-width" placeholder="宽度" value="1000">
+                    <span style="margin: 0 10px;">×</span>
+                    <input type="number" class="form-control" id="window-height" placeholder="高度" value="800">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="multi-instance-toggle">允许多开</label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="multi-instance-toggle" checked>
+                    <label for="multi-instance-toggle"></label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="dev-tools-toggle">开发工具</label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="dev-tools-toggle" checked>
+                    <label for="dev-tools-toggle"></label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 数据库设置 -->
+              <div class="settings-tab-content" id="tab-database">
+                <div class="form-group">
+                  <label for="db-path">数据库路径</label>
+                  <input type="text" class="form-control" id="db-path" value="./data/database.sqlite" readonly>
+                  <button class="btn btn-primary" style="margin-top: 10px;">浏览</button>
+                </div>
+                <div class="form-group">
+                  <label for="db-backup-toggle">自动备份</label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="db-backup-toggle" checked>
+                    <label for="db-backup-toggle"></label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="backup-interval">备份间隔（天）</label>
+                  <input type="number" class="form-control" id="backup-interval" value="7">
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-success">立即备份</button>
+                  <button class="btn btn-warning" style="margin-left: 10px;">恢复备份</button>
+                </div>
+              </div>
+              
+              <!-- 系统设置 -->
+              <div class="settings-tab-content" id="tab-system">
+                <div class="form-group">
+                  <label for="system-info">系统信息</label>
+                  <div class="system-info-box">
+                    <table class="table">
+                      <tr>
+                        <td>应用版本</td>
+                        <td id="app-version">1.0.0</td>
+                      </tr>
+                      <tr>
+                        <td>Electron 版本</td>
+                        <td id="electron-version">28.0.0</td>
+                      </tr>
+                      <tr>
+                        <td>操作系统</td>
+                        <td id="os-info">Windows 10</td>
+                      </tr>
+                      <tr>
+                        <td>处理器</td>
+                        <td id="cpu-info">Intel Core i7</td>
+                      </tr>
+                      <tr>
+                        <td>内存</td>
+                        <td id="memory-info">16GB</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="log-level">日志级别</label>
+                  <select class="form-control" id="log-level">
+                    <option value="error">错误</option>
+                    <option value="warn">警告</option>
+                    <option value="info">信息</option>
+                    <option value="debug">调试</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary">清除日志</button>
+                  <button class="btn btn-danger" style="margin-left: 10px;">重置所有设置</button>
+                </div>
+              </div>
+              
+              <div style="margin-top: 30px;">
+                <button class="btn btn-primary" id="save-settings-btn">保存设置</button>
+                <button class="btn btn-default" style="margin-left: 10px;">取消</button>
+              </div>
             </div>
           </div>
         </div>
