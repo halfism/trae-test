@@ -1,8 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+// 暴露 API 给渲染进程
 contextBridge.exposeInMainWorld('electronAPI', {
+  // 发送消息到主进程
   sendMessage: (message) => ipcRenderer.send('message', message),
-  onResponse: (callback) => ipcRenderer.on('response', (event, ...args) => callback(...args)),
   
   // 用户注册
   register: (userData) => ipcRenderer.invoke('register', userData),

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户登录</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: #5a6fd8;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      margin-top: 10px;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .error-message {
+      color: #dc3545;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+    
+    .success-message {
+      color: #28a745;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+    
+    .toggle-form {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .toggle-form a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .toggle-form a:hover {
+      text-decoration: underline;
+    }
+    
+    .form-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .form-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #666;
+      transition: all 0.3s;
+    }
+    
+    .form-tab.active {
+      color: #667eea;
+      border-bottom: 2px solid #667eea;
+    }
+    
+    .form-content {
+      display: none;
+    }
+    
+    .form-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>用户认证</h1>
+    
+    <div class="form-tabs">
+      <div class="form-tab active" data-target="login-form">登录</div>
+      <div class="form-tab" data-target="register-form">注册</div>
+    </div>
+    
+    <div id="login-form" class="form-content active">
+      <div class="form-group">
+        <label for="login-username">用户名</label>
+        <input type="text" id="login-username" placeholder="请输入用户名">
+        <div class="error-message" id="login-username-error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="login-password">密码</label>
+        <input type="password" id="login-password" placeholder="请输入密码">
+        <div class="error-message" id="login-password-error"></div>
+      </div>
+      
+      <button class="btn" id="login-btn">登录</button>
+      <div class="error-message" id="login-error"></div>
+      <div class="success-message" id="login-success"></div>
+    </div>
+    
+    <div id="register-form" class="form-content">
+      <div class="form-group">
+        <label for="register-username">用户名</label>
+        <input type="text" id="register-username" placeholder="请输入用户名">
+        <div class="error-message" id="register-username-error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="register-password">密码</label>
+        <input type="password" id="register-password" placeholder="请输入密码">
+        <div class="error-message" id="register-password-error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="register-nickname">昵称</label>
+        <input type="text" id="register-nickname" placeholder="请输入昵称">
+      </div>
+      
+      <div class="form-group">
+        <label for="register-email">邮箱</label>
+        <input type="email" id="register-email" placeholder="请输入邮箱">
+      </div>
+      
+      <div class="form-group">
+        <label for="register-phone">电话</label>
+        <input type="tel" id="register-phone" placeholder="请输入电话">
+      </div>
+      
+      <button class="btn" id="register-btn">注册</button>
+      <div class="error-message" id="register-error"></div>
+      <div class="success-message" id="register-success"></div>
+    </div>
+  </div>
+  
+  <script src="../scripts/login.js"></script>
+</body>
+</html>

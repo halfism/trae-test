@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主界面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    
+    .sidebar-header {
+      margin-bottom: 30px;
+    }
+    
+    .sidebar-header h2 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .user-info .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #3498db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .user-info .username {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .user-info .email {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .nav-menu {
+      flex: 1;
+    }
+    
+    .nav-item {
+      padding: 12px 15px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+    }
+    
+    .nav-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-item.active {
+      background-color: #3498db;
+    }
+    
+    .nav-item i {
+      margin-right: 10px;
+    }
+    
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .header {
+      background-color: white;
+      padding: 15px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .header h1 {
+      font-size: 20px;
+      color: #333;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+    
+    .content-area {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .content-section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    
+    .content-section h2 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    
+    .form-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .table-container {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .status-active {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status-inactive {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .action-btn {
+      padding: 4px 8px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .action-btn-edit {
+      background-color: #ffc107;
+      color: #212529;
+    }
+    
+    .action-btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .info-card {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .info-card h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .info-card p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .logs-container {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 10px;
+    }
+    
+    .log-item {
+      padding: 8px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    
+    .log-item:last-child {
+      border-bottom: none;
+    }
+    
+    .log-time {
+      color: #999;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+    
+    .log-action {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    
+    .log-ip {
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>应用管理系统</h2>
+      </div>
+      
+      <div class="user-info">
+        <div class="avatar" id="user-avatar">U</div>
+        <div class="username" id="user-username">用户名</div>
+        <div class="email" id="user-email">邮箱</div>
+      </div>
+      
+      <div class="nav-menu">
+        <div class="nav-item active" data-section="dashboard">
+          <i>📊</i>
+          <span>仪表盘</span>
+        </div>
+        <div class="nav-item" data-section="profile">
+          <i>👤</i>
+          <span>个人资料</span>
+        </div>
+        <div class="nav-item" data-section="settings">
+          <i>⚙️</i>
+          <span>设置</span>
+        </div>
+        <div class="nav-item" data-section="logs">
+          <i>📋</i>
+          <span>操作日志</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <div class="nav-item" id="logout-btn">
+          <i>🚪</i>
+          <span>退出登录</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 主内容区 -->
+    <div class="main-content">
+      <div class="header">
+        <h1>仪表盘</h1>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="refresh-btn">刷新</button>
+          <button class="btn btn-primary" id="add-btn">添加</button>
+        </div>
+      </div>
+      
+      <div class="content-area">
+        <!-- 仪表盘 -->
+        <div id="dashboard-section" class="content-section">
+          <h2>系统概览</h2>
+          
+          <div class="info-card">
+            <h3>账户信息</h3>
+            <p><strong>用户名:</strong> <span id="dashboard-username">-</span></p>
+            <p><strong>昵称:</strong> <span id="dashboard-nickname">-</span></p>
+            <p><strong>邮箱:</strong> <span id="dashboard-email">-</span></p>
+            <p><strong>电话:</strong> <span id="dashboard-phone">-</span></p>
+            <p><strong>注册时间:</strong> <span id="dashboard-create-time">-</span></p>
+            <p><strong>最后登录:</strong> <span id="dashboard-last-login">-</span></p>
+          </div>
+        </div>
+        
+        <!-- 个人资料 -->
+        <div id="profile-section" class="content-section" style="display: none;">
+          <h2>个人资料</h2>
+          
+          <form id="profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profile-username">用户名</label>
+                <input type="text" id="profile-username" readonly>
+              </div>
+              <div class="form-group">
+                <label for="profile-nickname">昵称</label>
+                <input type="text" id="profile-nickname">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profile-email">邮箱</label>
+                <input type="email" id="profile-email">
+              </div>
+              <div class="form-group">
+                <label for="profile-phone">电话</label>
+                <input type="tel" id="profile-phone">
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="cancel-profile-btn">取消</button>
+              <button type="button" class="btn btn-primary" id="save-profile-btn">保存</button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- 设置 -->
+        <div id="settings-section" class="content-section" style="display: none;">
+          <h2>账户设置</h2>
+          
+          <div class="content-section">
+            <h3>修改密码</h3>
+            <form id="password-form">
+              <div class="form-group">
+                <label for="old-password">原密码</label>
+                <input type="password" id="old-password">
+              </div>
+              <div class="form-group">
+                <label for="new-password">新密码</label>
+                <input type="password" id="new-password">
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">确认新密码</label>
+                <input type="password" id="confirm-password">
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancel-password-btn">取消</button>
+                <button type="button" class="btn btn-primary" id="save-password-btn">保存</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- 操作日志 -->
+        <div id="logs-section" class="content-section" style="display: none;">
+          <h2>操作日志</h2>
+          <div class="logs-container" id="logs-container">
+            <!-- 日志将通过 JavaScript 动态添加 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../scripts/main-interface.js"></script>
+</body>
+</html>

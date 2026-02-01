@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const DatabaseManager = require('./database');
+const DatabaseManager = require('../common/database');
 
 // 移除单实例锁定，允许多开
 // 注意：在某些 Electron 版本中，默认就是多实例的
@@ -12,7 +12,7 @@ const windows = [];
 let db = null;
 
 async function initDatabase() {
-  const DatabaseManager = require('./database');
+  const DatabaseManager = require('../common/database');
   db = new DatabaseManager();
   await db.init();
 }
@@ -24,7 +24,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, '../renderer/preload.js'),
       nodeIntegration: false,
       contextIsolation: true
     }
@@ -33,7 +33,7 @@ function createWindow() {
   // 添加到窗口数组
   windows.push(mainWindow);
 
-  mainWindow.loadFile('login.html');
+  mainWindow.loadFile(path.join(__dirname, '../renderer/pages/login.html'));
   
   // 打开开发者工具进行调试
   mainWindow.webContents.openDevTools();

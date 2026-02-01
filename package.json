@@ -2,7 +2,7 @@
   "name": "electron-desktop-app",
   "version": "1.0.0",
   "description": "基于 Electron 的桌面 GUI 应用",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",

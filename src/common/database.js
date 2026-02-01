@@ -5,9 +5,8 @@ const fs = require('fs');
 class DatabaseManager {
   constructor() {
     this.db = null;
-    this.dbPath = path.join(__dirname, 'data', 'app.db');
+    this.dbPath = path.join(__dirname, '../../data/app.db');
     this.dataDir = path.dirname(this.dbPath);
-    this.init();
   }
   
   async init() {

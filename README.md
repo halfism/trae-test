@@ -71,21 +71,32 @@
 ## 项目结构
 
 ```
-.
-├── .gitignore         # Git 忽略文件配置
-├── LICENSE            # 许可证文件
-├── README.md          # 项目说明文件
-├── database.js        # 数据库管理类
-├── index.html         # 旧版渲染进程界面文件
-├── login.html         # 登录和注册界面
-├── login.js          # 登录和注册逻辑
-├── main.html         # 主界面（左侧菜单栏）
-├── main-interface.js  # 主界面交互逻辑
-├── main.js           # 主进程文件
-├── package-lock.json  # npm 依赖锁定文件
-├── package.json      # 项目配置文件
-├── preload.js        # 预加载脚本文件
-└── renderer.js       # 渲染进程脚本（兼容旧版）
+electron-desktop-app/
+├── src/                  # 源代码目录
+│   ├── main/             # 主进程代码
+│   │   └── main.js       # 主入口文件
+│   ├── renderer/         # 渲染进程代码
+│   │   ├── pages/        # 页面文件
+│   │   │   ├── login.html    # 登录页面
+│   │   │   └── main.html     # 主界面
+│   │   ├── scripts/      # 脚本文件
+│   │   │   ├── login.js      # 登录相关脚本
+│   │   │   └── main-interface.js # 主界面脚本
+│   │   ├── components/   # 组件目录
+│   │   ├── styles/       # 样式文件
+│   │   └── preload.js    # 预加载脚本
+│   ├── common/           # 公共代码
+│   │   └── database.js   # 数据库管理
+│   └── utils/            # 工具函数
+├── data/                 # 数据目录
+│   └── app.db            # SQLite 数据库文件
+├── assets/               # 静态资源
+├── build/                # 构建输出
+├── .gitignore            # Git 忽略文件配置
+├── LICENSE               # 许可证文件
+├── README.md             # 项目说明文件
+├── package-lock.json     # npm 依赖锁定文件
+└── package.json          # 项目配置文件
 ```
 
 ## 核心文件说明
@@ -93,7 +104,7 @@
 ### package.json
 项目配置文件，定义了项目依赖、脚本命令和元信息。
 
-### main.js
+### src/main/main.js
 主进程文件，负责创建和管理应用窗口，处理应用生命周期事件。
 
 **核心功能**：
@@ -101,7 +112,7 @@
 - IPC 通信处理（注册、登录、用户信息管理等）
 - 窗口管理和多开支持
 
-### database.js
+### src/common/database.js
 数据库管理类，封装了 SQLite 数据库操作。
 
 **功能**：
@@ -111,7 +122,7 @@
 - 密码修改
 - 用户操作日志记录
 
-### login.html & login.js
+### src/renderer/pages/login.html & src/renderer/scripts/login.js
 登录和注册界面，采用 RuoYi 风格设计。
 
 **功能**：
@@ -120,7 +131,7 @@
 - 表单验证
 - 错误提示和加载状态
 
-### main.html & main-interface.js
+### src/renderer/pages/main.html & src/renderer/scripts/main-interface.js
 主界面，包含左侧菜单栏和多个功能模块。
 
 **功能模块**：
@@ -130,7 +141,7 @@
 - AI 工具：AI 功能展示
 - 系统设置：系统配置管理
 
-### preload.js
+### src/renderer/preload.js
 预加载脚本，通过 contextBridge 安全地暴露 Electron API 给渲染进程。
 
 **暴露的 API**：
@@ -141,12 +152,6 @@
 - updateUser：更新用户信息
 - changePassword：修改密码
 - getUserLogs：获取用户日志
-
-### renderer.js
-渲染进程脚本，兼容旧版 index.html 的功能。
-
-### index.html
-旧版渲染进程界面文件，保留用于向后兼容。
 
 ## 常见问题与解决方案
 
